@@ -4,14 +4,14 @@ import 'package:fluorite/fluorite.dart';
 import 'package:fluorite/src/utils.dart';
 
 class FluoriteClient {
-  final dio = d.Dio();
+  final d.Dio dio;
   final logger = getLogger('client');
-  FluoriteClient() {
+  FluoriteClient(this.dio) {
     initLogger();
   }
 
   Future<Response<T>> request<T>(Request request) async {
-    logger.finest(request);
+    logger.fine(request);
     var options = d.RequestOptions(
       baseUrl: request.baseUrl,
       path: request.path,
@@ -19,14 +19,8 @@ class FluoriteClient {
       method: request.method,
       queryParameters: request.parameters,
     );
-    logger.fine('send request...');
+    logger.fine('sending request...');
     var result = await dio.request(options.path, options: options);
-    logger.finest('''response: {
-          status: ${result.statusCode}, 
-          message: ${result.statusMessage},
-          extra: ${result.extra}
-        }''');
-
     final response = Response<T>(
         status: result.statusCode,
         message: result.statusMessage,
