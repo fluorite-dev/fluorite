@@ -19,7 +19,6 @@ class FluoriteClient {
       method: request.method,
       queryParameters: request.parameters,
     );
-    logger.fine('sending request...');
     var result = await dio.request(options.path, options: options);
     final response = Response<T>(
         status: result.statusCode,
