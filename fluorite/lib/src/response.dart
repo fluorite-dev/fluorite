@@ -1,13 +1,15 @@
-import 'package:meta/meta.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:meta/meta.dart';
 
 @immutable
 class Response<T> {
+  final List<int> data;
   final int status;
   final String message;
   final T body;
   final Map<String, String> headers;
   Response({
+    this.data,
     this.status,
     this.message,
     this.body,
@@ -15,12 +17,14 @@ class Response<T> {
   });
 
   Response<T> copyWith({
+    List<int> data,
     int status,
     String message,
     T body,
     Map<String, String> headers,
   }) {
     return Response<T>(
+      data: data ?? this.data,
       status: status ?? this.status,
       message: message ?? this.message,
       body: body ?? this.body,
@@ -42,6 +46,6 @@ extension ResponseExt on Response {
         headers: res.headers.map.map(
           (key, value) => MapEntry(key, value.join()),
         ),
-        body: res.data);
+        data: res.data);
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:fluorite/fluorite.dart';
 import 'package:fluorite/src/http_method.dart';
@@ -35,10 +37,32 @@ void main() {
       }
     });
   });
-  test('client', () async {
-    _server.enqueue(body: {'method': HttpMethod.GET});
+  test('response converter map', () async {
+    _server.enqueue(
+        body: json.encode({'method': HttpMethod.GET, 'n122': 'ssss'}),
+        headers: {
+          'Content-Type': 'application/json',
+        });
     var req = Request(method: HttpMethod.GET, path: '/');
     var map = await _client.request(req);
+    print(map);
+  });
+
+  test('response converter List', () async {
+    _server.enqueue(body: json.encode(['1', '2', '3']), headers: {
+      'Content-Type': 'application/json',
+    });
+    var req = Request(method: HttpMethod.GET, path: '/');
+    var map = await _client.request<List, String>(req);
+    print(map.body.first.runtimeType);
+  });
+
+  test('test get data from httpbin ', () async {
+    var dio = Dio(BaseOptions(baseUrl: 'https://httpbin.org'));
+    var client = FluoriteClient(dio);
+    var req =
+        Request(method: HttpMethod.GET, path: '/get', parameters: {'你好': '你好'});
+    var map = await client.request(req);
     print(map);
   });
 }

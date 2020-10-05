@@ -8,3 +8,7 @@ void initLogger({Level level = Level.ALL}) {
     print('${record.level.name}: ${record.time}: ${record.message}');
   });
 }
+
+bool isTypeOf<T, I>() => _TypeChecker<T>() is _TypeChecker<I>;
+
+class _TypeChecker<T> {}
