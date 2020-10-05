@@ -19,11 +19,12 @@ class FluoriteClient {
       method: request.method,
       queryParameters: request.parameters,
     );
+
+    options.responseType = d.ResponseType.bytes;
+
     var result = await dio.request(options.path, options: options);
-    final response = Response<T>(
-        status: result.statusCode,
-        message: result.statusMessage,
-        body: result.data);
+
+    final response = ResponseExt.fromDio<T>(result);
     logger.fine(response);
     return Future.value(response);
   }

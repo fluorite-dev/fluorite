@@ -36,9 +36,9 @@ void main() {
     });
   });
   test('client', () async {
-    final client = FluoriteClient(Dio());
-    var request =
-        Request(method: HttpMethod.GET, path: 'https://httpbin.org/get');
-    await client.request(request);
+    _server.enqueue(body: {'method': HttpMethod.GET});
+    var req = Request(method: HttpMethod.GET, path: '/');
+    var map = await _client.request(req);
+    print(map);
   });
 }
