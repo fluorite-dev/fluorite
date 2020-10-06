@@ -1,4 +1,4 @@
-import 'package:dio/dio.dart' as d;
+import 'package:dio/dio.dart' as dio;
 
 import 'package:fluorite/fluorite.dart';
 import 'package:fluorite/src/converter.dart';
@@ -6,16 +6,13 @@ import 'package:fluorite/src/utils.dart';
 
 class FluoriteClient {
   final ConverterFactory converterFactory;
-  final d.Dio dio;
-  final logger = getLogger('client');
-  FluoriteClient(this.dio,
-      {this.converterFactory = const JsonConverterFactory()}) {
-    initLogger();
-  }
+  final dio.Dio dioClient;
+  FluoriteClient(this.dioClient,
+      {this.converterFactory = const JsonConverterFactory()});
 
   Future<Response<T>> request<T, I>(Request request) async {
     logger.fine(request);
-    var options = d.RequestOptions(
+    var options = dio.RequestOptions(
       baseUrl: request.baseUrl,
       path: request.path,
       data: request.body,
@@ -23,9 +20,9 @@ class FluoriteClient {
       queryParameters: request.parameters,
     );
 
-    options.responseType = d.ResponseType.bytes;
+    options.responseType = dio.ResponseType.bytes;
 
-    var result = await dio.requestUri(request.buildUri(),
+    var result = await dioClient.requestUri(request.buildUri(),
         options: options); // TODO give an option to use orignal request method
     final response = ResponseExt.fromDio<T>(result);
     logger.fine(response);
