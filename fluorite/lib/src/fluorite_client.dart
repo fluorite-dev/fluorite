@@ -25,8 +25,8 @@ class FluoriteClient {
 
     options.responseType = d.ResponseType.bytes;
 
-    var result = await dio.request(options.path, options: options);
-
+    var result = await dio.requestUri(request.buildUri(),
+        options: options); // TODO give an option to use orignal request method
     final response = ResponseExt.fromDio<T>(result);
     logger.fine(response);
     final value = converterFactory.convertResponse<T, I>(response);
