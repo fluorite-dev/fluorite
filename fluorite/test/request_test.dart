@@ -1,5 +1,4 @@
 import 'package:fluorite/fluorite.dart';
-import 'package:fluorite/src/http_method.dart';
 import 'package:test/test.dart';
 
 void main() {

@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:fluorite/fluorite.dart';
-import 'package:fluorite/src/http_method.dart';
 import 'package:mock_web_server/mock_web_server.dart';
 import 'package:test/test.dart';
 
@@ -41,7 +40,7 @@ void main() {
     _server.enqueue(
         body: json.encode({'method': HttpMethod.GET, 'n122': 'ssss'}),
         headers: {
-          'Content-Type': 'application/json',
+          kConentType: jsonType,
         });
     var req = Request(method: HttpMethod.GET, path: '/');
     var map = await _client.request(req);
@@ -50,7 +49,7 @@ void main() {
 
   test('response converter List', () async {
     _server.enqueue(body: json.encode(['1', '2', '3']), headers: {
-      'Content-Type': 'application/json',
+      kConentType: jsonType,
     });
     var req = Request(method: HttpMethod.GET, path: '/');
     var map = await _client.request<List, String>(req);
