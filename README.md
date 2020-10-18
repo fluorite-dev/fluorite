@@ -1,5 +1,3 @@
-# fluorite
-
 
 ![](fluorite.png)
 
