@@ -11,9 +11,6 @@ typedef RequestConverter = Request Function(Request request);
 typedef ResponseConverter = FutureOr<Response<T>> Function<T, I>(
     Response response);
 
-const keyConentType = 'Content-Type';
-const jsonType = 'application/json';
-
 abstract class ConverterFactory {
   const ConverterFactory();
   RequestConverter get convertRequest;
@@ -30,7 +27,7 @@ class JsonConverterFactory extends ConverterFactory {
       <T, I>(Response response) => decode<T, I>(response);
 
   Request encode(Request request) {
-    var contentType = request.headers[keyConentType];
+    var contentType = request.headers[kConentType];
     if (contentType?.contains(jsonType) == true) {
       return request.copyWith(body: json.encode(request.body));
     }
@@ -38,7 +35,7 @@ class JsonConverterFactory extends ConverterFactory {
   }
 
   Response<T> decode<T, I>(Response response) {
-    var contentType = response.headers[keyConentType];
+    var contentType = response.headers[kConentType];
     dynamic body = response.data;
     if (contentType?.contains(jsonType) == true) {
       body = utf8.decode(response.data);
