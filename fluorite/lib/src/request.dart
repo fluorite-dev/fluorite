@@ -46,11 +46,14 @@ class Request {
     Uri uri;
     final baseUrl = this.baseUrl ?? '';
     final path = this.path ?? '';
-    if (path.startsWith(r'http[s]*://')) uri = Uri.parse(path);
-    var url = (!baseUrl.endsWith('/') && !path.endsWith('/'))
-        ? '$baseUrl/$path'
-        : '$baseUrl$path';
-    uri = Uri.parse(url);
+    if (path.startsWith(RegExp(r'http[s]*://'))) {
+      uri = Uri.parse(path);
+    } else {
+      var url = (!baseUrl.endsWith('/') && !path.endsWith('/'))
+          ? '$baseUrl/$path'
+          : '$baseUrl$path';
+      uri = Uri.parse(url);
+    }
 
     if (uri.path.contains('//')) {
       // clear '//' in path
