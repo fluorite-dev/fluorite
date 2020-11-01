@@ -49,7 +49,8 @@ class Request {
     if (path.startsWith(RegExp(r'http[s]*://'))) {
       uri = Uri.parse(path);
     } else {
-      var url = (!baseUrl.endsWith('/') && !path.endsWith('/'))
+      var url = ((baseUrl.isNotEmpty && !baseUrl.endsWith('/')) &&
+              !path.endsWith('/'))
           ? '$baseUrl/$path'
           : '$baseUrl$path';
       uri = Uri.parse(url);
